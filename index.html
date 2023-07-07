@@ -2,16 +2,58 @@
 <html>
 <head>
     <title>Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            font-size: 2em;
+        }
+        
+        #countdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        #countdown {
+            text-align: center;
+        }
+        
+        #progress-bar {
+            width: 50%;
+            height: 20px;
+            background-color: grey;
+            margin: 0 auto;
+        }
+        
+        #progress {
+            height: 20px;
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Countdown to 05.08.2023</h1>
-    <p id="countdown"></p>
+    <div id="countdown-container">
+        <div>
+            <h1>DO WYJAZDU ZOSTAŁO:</h1>
+            <p id="countdown"></p>
+            <div id="progress-bar">
+                <div id="progress"></div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Set the target date
+        // Set the target date and start date
         var targetDate = new Date("Aug 5, 2023 00:00:00").getTime();
+        var startDate = new Date("Jul 1, 2023 00:00:00").getTime();
         
-        // Update the countdown every 1 second
+        // Calculate the total time between the start date and target date
+        var totalTime = targetDate - startDate;
+        
+        // Update the countdown and progress bar every 1 second
         var countdown = setInterval(function() {
             // Get the current date and time
             var now = new Date().getTime();
@@ -29,10 +71,16 @@
             document.getElementById("countdown").innerHTML = days + " days " + hours + " hours "
             + minutes + " minutes " + seconds + " seconds ";
             
+            // Update the progress bar
+            var timeElapsed = now - startDate;
+            var progress = Math.min(timeElapsed / totalTime, 1);
+            document.getElementById("progress").style.width = progress * 100 + "%";
+            
             // If the countdown is finished, display a message
             if (timeRemaining < 0) {
                 clearInterval(countdown);
                 document.getElementById("countdown").innerHTML = "The time has come!";
+                document.getElementById("progress").style.width = "100%";
             }
         }, 1000);
     </script>
